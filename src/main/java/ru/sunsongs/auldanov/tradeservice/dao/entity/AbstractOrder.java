@@ -11,7 +11,8 @@ import java.util.Date;
  */
 @MappedSuperclass
 abstract class AbstractOrder extends AbstractEntity {
-    private int quantity;
+    private long quantity;
+    private long remind;
     private BigDecimal price;
     private Date created;
     private long version;
@@ -19,11 +20,11 @@ abstract class AbstractOrder extends AbstractEntity {
 
     @Min(0)
     @Column(name = "quantity")
-    public int getQuantity() {
+    public long getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(long quantity) {
         this.quantity = quantity;
     }
 
@@ -64,5 +65,14 @@ abstract class AbstractOrder extends AbstractEntity {
 
     public void setExecution(Execution execution) {
         this.execution = execution;
+    }
+
+    @Column(name = "remind")
+    public long getRemind() {
+        return remind;
+    }
+
+    public void setRemind(long remind) {
+        this.remind = remind;
     }
 }
