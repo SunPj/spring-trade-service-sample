@@ -1,6 +1,6 @@
 package ru.sunsongs.auldanov.tradeservice.model;
 
-import javax.validation.constraints.Size;
+import javax.validation.constraints.Min;
 import java.math.BigDecimal;
 
 /**
@@ -8,20 +8,31 @@ import java.math.BigDecimal;
  * @since 6/2/16.
  */
 public class OrderData {
-    private int quantity;
+    private long quantity;
     private BigDecimal price;
 
-    public OrderData(int quantity, BigDecimal price) {
+    public OrderData() {
+    }
+
+    public OrderData(long quantity, BigDecimal price) {
         this.quantity = quantity;
         this.price = price;
     }
 
-    @Size(min = 1)
-    public int getQuantity() {
+    public void setQuantity(long quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    @Min(1)
+    public long getQuantity() {
         return quantity;
     }
 
-    @Size(min = 1)
+    @Min(1)
     public BigDecimal getPrice() {
         return price;
     }

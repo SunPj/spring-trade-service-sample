@@ -11,7 +11,7 @@ import java.util.List;
  * @since 6/2/16.
  */
 public interface ExecutedOrderDao extends JpaRepository<Execution, Long> {
-    List<Execution> findAllByOrderByIdDesc(Pageable pageable);
+    List<Execution> findAllByOrderByIdAsc(Pageable pageable);
 
     Execution findTopByOrderByIdDesc();
 }

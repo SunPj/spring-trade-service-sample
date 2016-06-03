@@ -49,11 +49,10 @@ public class ExecutionService {
 
     private void execute(SellOrder sellOrder, BuyOrder buyOrder) {
         long quantity = buyOrder.getRemind() > sellOrder.getRemind() ? sellOrder.getRemind() : buyOrder.getRemind();
-        final Execution execution = new Execution(buyOrder, sellOrder, quantity);
-        executedOrderDao.save(execution);
         buyOrder.setRemind(buyOrder.getRemind() - quantity);
         sellOrder.setRemind(sellOrder.getRemind() - quantity);
-
+        final Execution execution = new Execution(buyOrder, sellOrder, quantity);
+        executedOrderDao.save(execution);
     }
 
     public void sell(OrderData sellRequest) {
@@ -62,7 +61,7 @@ public class ExecutionService {
         List<BuyOrder> buyOrders = buyOrderDao.getSuitableOrders(sellOrder.getPrice());
         for (BuyOrder buyOrder : buyOrders) {
             execute(sellOrder, buyOrder);
-            if (sellOrder.getQuantity() == 0) {
+            if (sellOrder.getRemind() == 0) {
                 break;
             }
         }
@@ -74,14 +73,14 @@ public class ExecutionService {
         List<SellOrder> sellOrders = sellOrderDao.getSuitableOrders(buyOrder.getPrice());
         for (SellOrder sellOrder : sellOrders) {
             execute(sellOrder, buyOrder);
-            if (buyOrder.getQuantity() == 0) {
+            if (buyOrder.getRemind() == 0) {
                 break;
             }
         }
     }
 
     public List<Execution> executedOrders(int count) {
-        return executedOrderDao.findAllByOrderByIdDesc(new PageRequest(1, count));
+        return executedOrderDao.findAllByOrderByIdAsc(new PageRequest(0, count));
     }
 
     public Execution lastExecution() {

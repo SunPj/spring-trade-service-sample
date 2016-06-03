@@ -15,6 +15,6 @@ import java.util.List;
 public interface BuyOrderDao extends JpaRepository<BuyOrder, Long> {
     List<BuyOrder> findByRemindGreaterThan(long reminder);
 
-    @Query("SELECT bo FROM BuyOrder bo WHERE bo.price > ?1 ORDER BY bo.id DESC")
+    @Query("SELECT bo FROM BuyOrder bo WHERE bo.price >= ?1 ORDER BY bo.id ASC")
     List<BuyOrder> getSuitableOrders(@Nonnull BigDecimal price);
 }
