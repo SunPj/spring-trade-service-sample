@@ -15,7 +15,7 @@ import java.util.Date;
 @MappedSuperclass
 abstract class AbstractOrder extends AbstractEntity {
     private long quantity;
-    private long remind;
+    private long remain;
     private BigDecimal price;
     private Date created;
     private long version;
@@ -27,7 +27,7 @@ abstract class AbstractOrder extends AbstractEntity {
         this.created = new Date();
         this.price = orderData.getPrice();
         this.quantity = orderData.getQuantity();
-        this.remind = this.quantity;
+        this.remain = this.quantity;
     }
 
     @Min(0)
@@ -70,12 +70,12 @@ abstract class AbstractOrder extends AbstractEntity {
         this.version = version;
     }
 
-     @Column(name = "remind")
-    public long getRemind() {
-        return remind;
+     @Column(name = "remain")
+    public long getRemain() {
+        return remain;
     }
 
-    public void setRemind(long remind) {
-        this.remind = remind;
+    public void setRemain(long remain) {
+        this.remain = remain;
     }
 }

@@ -29,39 +29,44 @@ public class ExecutionService {
     private final SellOrderDao sellOrderDao;
     private final BuyOrderDao buyOrderDao;
     private final ExecutedOrderDao executedOrderDao;
+    private final NotificationService notificationService;
 
     @Autowired
     public ExecutionService(@Nonnull ExecutedOrderDao executedOrderDao,
                             @Nonnull SellOrderDao sellOrderDao,
-                            @Nonnull BuyOrderDao buyOrderDao) {
+                            @Nonnull BuyOrderDao buyOrderDao,
+                            NotificationService notificationService) {
         this.sellOrderDao = requireNonNull(sellOrderDao);
         this.buyOrderDao = requireNonNull(buyOrderDao);
         this.executedOrderDao = requireNonNull(executedOrderDao);
+        this.notificationService = requireNonNull(notificationService);
     }
 
     public List<BuyOrder> waitingBuyOrders() {
-        return buyOrderDao.findByRemindGreaterThan(0);
+        return buyOrderDao.findByRemainGreaterThan(0);
     }
 
     public List<SellOrder> waitingSellOrders() {
-        return sellOrderDao.findByRemindGreaterThan(0);
+        return sellOrderDao.findByRemainGreaterThan(0);
     }
 
     private void execute(SellOrder sellOrder, BuyOrder buyOrder) {
-        long quantity = buyOrder.getRemind() > sellOrder.getRemind() ? sellOrder.getRemind() : buyOrder.getRemind();
-        buyOrder.setRemind(buyOrder.getRemind() - quantity);
-        sellOrder.setRemind(sellOrder.getRemind() - quantity);
+        long quantity = buyOrder.getRemain() > sellOrder.getRemain() ? sellOrder.getRemain() : buyOrder.getRemain();
+        buyOrder.setRemain(buyOrder.getRemain() - quantity);
+        sellOrder.setRemain(sellOrder.getRemain() - quantity);
         final Execution execution = new Execution(buyOrder, sellOrder, quantity);
         executedOrderDao.save(execution);
+        notificationService.newExecution(execution);
     }
 
     public void sell(OrderData sellRequest) {
         final SellOrder sellOrder = new SellOrder(sellRequest);
         sellOrderDao.save(sellOrder);
+        notificationService.newSellOrder(sellOrder);
         List<BuyOrder> buyOrders = buyOrderDao.getSuitableOrders(sellOrder.getPrice());
         for (BuyOrder buyOrder : buyOrders) {
             execute(sellOrder, buyOrder);
-            if (sellOrder.getRemind() == 0) {
+            if (sellOrder.getRemain() == 0) {
                 break;
             }
         }
@@ -70,17 +75,18 @@ public class ExecutionService {
     public void buy(OrderData buyRequest) {
         final BuyOrder buyOrder = new BuyOrder(buyRequest);
         buyOrderDao.save(buyOrder);
+        notificationService.newBuyOrder(buyOrder);
         List<SellOrder> sellOrders = sellOrderDao.getSuitableOrders(buyOrder.getPrice());
         for (SellOrder sellOrder : sellOrders) {
             execute(sellOrder, buyOrder);
-            if (buyOrder.getRemind() == 0) {
+            if (buyOrder.getRemain() == 0) {
                 break;
             }
         }
     }
 
     public List<Execution> executedOrders(int count) {
-        return executedOrderDao.findAllByOrderByIdAsc(new PageRequest(0, count));
+        return executedOrderDao.findAllByOrderByIdDesc(new PageRequest(0, count));
     }
 
     public Execution lastExecution() {

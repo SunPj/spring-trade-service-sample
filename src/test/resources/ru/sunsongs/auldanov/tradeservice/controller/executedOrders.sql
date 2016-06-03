@@ -1,8 +1,8 @@
-INSERT INTO buy_order (id, price, quantity, remind, version, created)
+INSERT INTO buy_order (id, price, quantity, remain, version, created)
 VALUES (17, 100, 100, 0, 1, now()),
   (18, 600, 1000, 500, 1, now());
 
-INSERT INTO sell_order (id, price, quantity, remind, version, created)
+INSERT INTO sell_order (id, price, quantity, remain, version, created)
 VALUES (111, 50, 150, 50, 1, now()),
   (222, 500, 500, 0, 1, now());
 

@@ -1,7 +1,7 @@
 CREATE TABLE buy_order (
   id       BIGSERIAL      NOT NULL PRIMARY KEY,
   quantity BIGINT         NOT NULL,
-  remind   BIGINT         NOT NULL,
+  remain   BIGINT         NOT NULL,
   price    NUMERIC(11, 2) NOT NULL,
   created  TIMESTAMPTZ    NOT NULL,
   version  BIGINT
@@ -10,7 +10,7 @@ CREATE TABLE buy_order (
 CREATE TABLE sell_order (
   id       BIGSERIAL      NOT NULL PRIMARY KEY,
   quantity BIGINT         NOT NULL,
-  remind   BIGINT         NOT NULL,
+  remain   BIGINT         NOT NULL,
   price    NUMERIC(11, 2) NOT NULL,
   created  TIMESTAMPTZ    NOT NULL,
   version  BIGINT

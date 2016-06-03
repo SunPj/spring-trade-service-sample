@@ -13,7 +13,7 @@ import java.util.List;
  * @since 6/2/16.
  */
 public interface SellOrderDao extends JpaRepository<SellOrder, Long> {
-    List<SellOrder> findByRemindGreaterThan(long reminder);
+    List<SellOrder> findByRemainGreaterThan(long remain);
 
     @Query("SELECT so FROM SellOrder so WHERE so.price <= ?1 ORDER BY so.id ASC")
     List<SellOrder> getSuitableOrders(@Nonnull BigDecimal price);

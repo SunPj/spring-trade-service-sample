@@ -45,12 +45,12 @@ public class ExecutionServiceTest {
                         hasProperty("buyOrder", allOf(
                                 hasProperty("price", is(BigDecimal.valueOf(30))),
                                 hasProperty("quantity", is(50L)),
-                                hasProperty("remind", is(0L))
+                                hasProperty("remain", is(0L))
                         )),
                         hasProperty("sellOrder", allOf(
                                 hasProperty("price", is(BigDecimal.valueOf(20))),
                                 hasProperty("quantity", is(200L)),
-                                hasProperty("remind", is(150L))
+                                hasProperty("remain", is(150L))
                         ))
                 ))
         ));
@@ -75,24 +75,24 @@ public class ExecutionServiceTest {
                         hasProperty("buyOrder", allOf(
                                 hasProperty("price", is(BigDecimal.valueOf(5))),
                                 hasProperty("quantity", is(20L)),
-                                hasProperty("remind", is(0L))
+                                hasProperty("remain", is(0L))
                         )),
                         hasProperty("sellOrder", allOf(
                                 hasProperty("price", is(BigDecimal.valueOf(5))),
                                 hasProperty("quantity", is(30L)),
-                                hasProperty("remind", is(0L))
+                                hasProperty("remain", is(0L))
                         ))
                 )),
                 hasItem(allOf(hasProperty("quantity", is(10L)),
                         hasProperty("buyOrder", allOf(
                                 hasProperty("price", is(BigDecimal.valueOf(15))),
                                 hasProperty("quantity", is(30L)),
-                                hasProperty("remind", is(20L))
+                                hasProperty("remain", is(20L))
                         )),
                         hasProperty("sellOrder", allOf(
                                 hasProperty("price", is(BigDecimal.valueOf(5))),
                                 hasProperty("quantity", is(30L)),
-                                hasProperty("remind", is(0L))
+                                hasProperty("remain", is(0L))
                         ))
                 ))
         ));
