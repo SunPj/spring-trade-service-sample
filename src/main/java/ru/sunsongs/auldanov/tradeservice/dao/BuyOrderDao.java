@@ -1,8 +1,11 @@
 package ru.sunsongs.auldanov.tradeservice.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import ru.sunsongs.auldanov.tradeservice.dao.entity.BuyOrder;
 
+import javax.annotation.Nonnull;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -10,5 +13,8 @@ import java.util.List;
  * @since 6/2/16.
  */
 public interface BuyOrderDao extends JpaRepository<BuyOrder, Long> {
-    List<BuyOrder> findByReminderGreaterThan0();
+    List<BuyOrder> findByRemindGreaterThan(long reminder);
+
+    @Query("SELECT bo FROM BuyOrder bo WHERE bo.price > ?1 ORDER BY bo.id DESC")
+    List<BuyOrder> getSuitableOrders(@Nonnull BigDecimal price);
 }

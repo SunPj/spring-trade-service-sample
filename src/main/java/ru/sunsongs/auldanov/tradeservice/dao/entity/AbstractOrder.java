@@ -1,5 +1,8 @@
 package ru.sunsongs.auldanov.tradeservice.dao.entity;
 
+import ru.sunsongs.auldanov.tradeservice.model.OrderData;
+
+import javax.annotation.Nonnull;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import java.math.BigDecimal;
@@ -16,7 +19,16 @@ abstract class AbstractOrder extends AbstractEntity {
     private BigDecimal price;
     private Date created;
     private long version;
-    private Execution execution;
+
+    public AbstractOrder() {
+    }
+
+    public AbstractOrder(@Nonnull OrderData orderData) {
+        this.created = new Date();
+        this.price = orderData.getPrice();
+        this.quantity = orderData.getQuantity();
+        this.remind = this.quantity;
+    }
 
     @Min(0)
     @Column(name = "quantity")
@@ -58,16 +70,7 @@ abstract class AbstractOrder extends AbstractEntity {
         this.version = version;
     }
 
-    @OneToMany(mappedBy = "executed_id")
-    public Execution getExecution() {
-        return execution;
-    }
-
-    public void setExecution(Execution execution) {
-        this.execution = execution;
-    }
-
-    @Column(name = "remind")
+     @Column(name = "remind")
     public long getRemind() {
         return remind;
     }

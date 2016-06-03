@@ -1,5 +1,6 @@
 package ru.sunsongs.auldanov.tradeservice.dao.entity;
 
+import javax.annotation.Nonnull;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -17,6 +18,16 @@ public class Execution extends AbstractEntity {
     private Date created;
     private long quantity;
 
+    public Execution() {
+    }
+
+    public Execution(@Nonnull BuyOrder buyOrder, @Nonnull SellOrder sellOrder, long quantity) {
+        this.buyOrder = buyOrder;
+        this.sellOrder = sellOrder;
+        this.created = new Date();
+        this.quantity = quantity;
+    }
+
     @NotNull
     @ManyToOne
     @JoinColumn(name = "buy_order_id")
@@ -29,6 +40,7 @@ public class Execution extends AbstractEntity {
     }
 
     @NotNull
+    @ManyToOne
     @JoinColumn(name = "sell_order_id")
     public SellOrder getSellOrder() {
         return sellOrder;
