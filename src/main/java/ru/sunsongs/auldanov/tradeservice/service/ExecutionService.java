@@ -15,7 +15,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
 
@@ -33,34 +32,59 @@ public class ExecutionService {
 
     @Autowired
     public ExecutionService(@Nonnull ExecutedOrderDao executedOrderDao,
-                            SellOrderDao sellOrderDao,
-                            BuyOrderDao buyOrderDao) {
+                            @Nonnull SellOrderDao sellOrderDao,
+                            @Nonnull BuyOrderDao buyOrderDao) {
         this.sellOrderDao = requireNonNull(sellOrderDao);
         this.buyOrderDao = requireNonNull(buyOrderDao);
         this.executedOrderDao = requireNonNull(executedOrderDao);
     }
 
     public List<BuyOrder> waitingBuyOrders() {
-        return buyOrderDao.findByReminderGreaterThan0();
+        return buyOrderDao.findByRemindGreaterThan(0);
     }
 
     public List<SellOrder> waitingSellOrders() {
-        return sellOrderDao.findByReminderGreaterThan0();
+        return sellOrderDao.findByRemindGreaterThan(0);
+    }
+
+    private void execute(SellOrder sellOrder, BuyOrder buyOrder) {
+        long quantity = buyOrder.getRemind() > sellOrder.getRemind() ? sellOrder.getRemind() : buyOrder.getRemind();
+        final Execution execution = new Execution(buyOrder, sellOrder, quantity);
+        executedOrderDao.save(execution);
+        buyOrder.setRemind(buyOrder.getRemind() - quantity);
+        sellOrder.setRemind(sellOrder.getRemind() - quantity);
+
     }
 
     public void sell(OrderData sellRequest) {
-        // TODO save order, find pair for execution for new order
+        final SellOrder sellOrder = new SellOrder(sellRequest);
+        sellOrderDao.save(sellOrder);
+        List<BuyOrder> buyOrders = buyOrderDao.getSuitableOrders(sellOrder.getPrice());
+        for (BuyOrder buyOrder : buyOrders) {
+            execute(sellOrder, buyOrder);
+            if (sellOrder.getQuantity() == 0) {
+                break;
+            }
+        }
     }
 
     public void buy(OrderData buyRequest) {
-        // TODO save order, find pair for execution for new order
+        final BuyOrder buyOrder = new BuyOrder(buyRequest);
+        buyOrderDao.save(buyOrder);
+        List<SellOrder> sellOrders = sellOrderDao.getSuitableOrders(buyOrder.getPrice());
+        for (SellOrder sellOrder : sellOrders) {
+            execute(sellOrder, buyOrder);
+            if (buyOrder.getQuantity() == 0) {
+                break;
+            }
+        }
     }
 
     public List<Execution> executedOrders(int count) {
-        return executedOrderDao.findOrderByIdDesc(new PageRequest(1, count));
+        return executedOrderDao.findAllByOrderByIdDesc(new PageRequest(1, count));
     }
 
-    public Optional<Execution> lastExecution() {
-        return executedOrderDao.findTop1OrderByIdDesc();
+    public Execution lastExecution() {
+        return executedOrderDao.findTopByOrderByIdDesc();
     }
 }
