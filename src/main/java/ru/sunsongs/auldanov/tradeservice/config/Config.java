@@ -2,23 +2,25 @@ package ru.sunsongs.auldanov.tradeservice.config;
 
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 @Configuration
-@EnableCaching
-@EnableJpaRepositories
+@EnableTransactionManagement
+@EnableJpaRepositories(basePackages = "ru.sunsongs.auldanov.tradeservice.dao")
 public class Config extends WebMvcConfigurerAdapter {
     @Value("${jdbc.driverClassName}")
     private String jdbcDriverClassName;
@@ -35,7 +37,7 @@ public class Config extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public DataSource driverManagerDataSource() {
+    public DataSource dataSource() {
         final DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(jdbcDriverClassName);
         dataSource.setUrl(jdbcDatabaseurl);
@@ -59,5 +61,13 @@ public class Config extends WebMvcConfigurerAdapter {
         entityManagerFactoryBean.setJpaVendorAdapter(adapter);
 
         return entityManagerFactoryBean;
+    }
+
+    @Bean
+    public JpaTransactionManager transactionManager(EntityManagerFactory em) {
+        final JpaTransactionManager tm = new JpaTransactionManager();
+        tm.setEntityManagerFactory(em);
+
+        return tm;
     }
 }

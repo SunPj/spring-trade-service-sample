@@ -24,7 +24,7 @@
 		<jackson-annotations-version>2.7.3</jackson-annotations-version>
 		<json-path-version>2.2.0</json-path-version>
 		<hibernate.version>4.3.10.Final</hibernate.version>
-		<spring.data.jpa.version>1.8.1.RELEASE</spring.data.jpa.version>
+		<postgresql.version>9.3-1102-jdbc41</postgresql.version>
 	</properties>
 
 	<dependencies>
@@ -32,6 +32,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
 		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -43,12 +49,6 @@
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
 			<version>${jackson-annotations-version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -95,11 +95,15 @@
 			<artifactId>spring-orm</artifactId>
 		</dependency>
 
-
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jpa</artifactId>
-			<version>${spring.data.jpa.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>${postgresql.version}</version>
 		</dependency>
 	</dependencies>
 	
