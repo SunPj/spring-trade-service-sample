@@ -13,6 +13,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.persistence.EntityManagerFactory;
@@ -69,5 +70,13 @@ public class Config extends WebMvcConfigurerAdapter {
         tm.setEntityManagerFactory(em);
 
         return tm;
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/").addResourceLocations("/index.html");
+        registry.addResourceHandler("/libs/**").addResourceLocations("/libs/");
+        registry.addResourceHandler("/app/**").addResourceLocations("/app/");
+        registry.addResourceHandler("/assets/**").addResourceLocations("/assets/");
     }
 }

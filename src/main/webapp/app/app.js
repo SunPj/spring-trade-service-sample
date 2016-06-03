@@ -1,0 +1,1 @@
+angular.module("tradeApp", ["tradeApp.controllers", "tradeApp.services"]);

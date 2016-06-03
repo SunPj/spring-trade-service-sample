@@ -1,0 +1,115 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Trading service</title>
+    <link rel="stylesheet" href="/libs/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/libs/angular/angular-csp.css"/>
+</head>
+<body ng-app="tradeApp">
+<div class="site-wrapper" ng-controller="MainCtrl" ng-cloak="">
+    <div class="site-wrapper-inner">
+        <div class="row col-lg-12 text-center">
+            <h1>Trading monitor</h1>
+        </div>
+        <div class="row col-md-12 col-md-offset-1 orders">
+            <div class="col-md-5">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h4>Buy orders ({{buyOrders.length}})</h4>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Quantity</th>
+                                <th>Remain</th>
+                                <th>Price</th>
+                                <th>Created date</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="b in buyOrders" ng-class="{danger: b.executed, success: b.new && !b.executed}">
+                                <th scope="row">{{b.id}}</th>
+                                <td>{{b.quantity}}</td>
+                                <td>{{b.remain}}</td>
+                                <td>{{b.price}}</td>
+                                <td>{{b.created | date:"dd.MM.yyyy HH:mm:ss"}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-5">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                            <h4>Sell orders ({{sellOrders.length}})</h4>
+                            <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Quantity</th>
+                                    <th>Remain</th>
+                                    <th>Price</th>
+                                    <th>Created date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="s in sellOrders" ng-class="{danger: s.executed, success: s.new && !s.executed}">
+                                    <th scope="row">{{s.id}}</th>
+                                    <td>{{s.quantity}}</td>
+                                    <td>{{s.remain}}</td>
+                                    <td>{{s.price}}</td>
+                                    <td>{{s.created | date:"dd.MM.yyyy HH:mm:ss"}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row col-md-10 col-md-offset-1">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h4>Last 10 deals</h4>
+                    <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Sell identity</th>
+                        <th>Sell price</th>
+                        <th>Buy identity</th>
+                        <th>Buy price</th>
+                        <th>Quantity</th>
+                        <th>Created date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="e in executed" ng-class="{success: e.new}">
+                        <th scope="row">{{e.id}}</th>
+                        <td>{{e.sellOrder.id}}</td>
+                        <td>{{e.sellOrder.price}}</td>
+                        <td>{{e.buyOrder.id}}</td>
+                        <td>{{e.buyOrder.price}}</td>
+                        <td>{{e.quantity}}</td>
+                        <td>{{e.created | date:"dd.MM.yyyy HH:mm:ss"}}</td>
+                    </tr>
+                </tbody>
+            </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="/libs/angular/angular.min.js"></script>
+    <script type="text/javascript" src="/libs/angular-resource/angular-resource.min.js"></script>
+    <script type="text/javascript" src="/libs/sockjs/sockjs.min.js"></script>
+    <script type="text/javascript" src="/libs/stomp-websocket/lib/stomp.min.js"></script>
+    <script type="text/javascript" src="/app/app.js"></script>
+    <script type="text/javascript" src="/app/services.js"></script>
+    <script type="text/javascript" src="/app/controllers.js"></script>
+</body>
+</html>

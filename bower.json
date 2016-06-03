@@ -1,0 +1,12 @@
+{
+  "name": "trade-live-updates",
+  "version": "0.0.1-SNAPSHOT",
+  "dependencies": {
+    "bootstrap": "latest",
+    "angular": "latest",
+    "angular-resource": "latest",
+    "jquery": "latest",
+    "sockjs": "latest",
+    "stomp-websocket": "latest"
+  }
+}
