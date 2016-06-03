@@ -62,6 +62,6 @@ public class TradeRestController {
 
     @RequestMapping(value = "/api/order/executed/last", method = GET)
     public Execution lastExecution() {
-        return executionService.lastExecution().orElse(null);
+        return executionService.lastExecution();
     }
 }
