@@ -144,36 +144,37 @@ public class TradeRestControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
                 .andExpect(MockMvcResultMatchers.jsonPath("$").value(hasSize(2)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0]").value(hasEntry("id", 11)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0]").value(hasEntry("id", 22)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].buyOrder").value(Matchers.<Map<String, Number>>allOf(
-                        hasEntry("id", 17),
-                        hasEntry("price", 100.0),
-                        hasEntry("quantity", 100),
-                        hasEntry("remain", 0)
-                )))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].sellOrder").value(Matchers.<Map<String, Number>>allOf(
-                        hasEntry("id", 111),
-                        hasEntry("price", 50.0),
-                        hasEntry("quantity", 150),
-                        hasEntry("remain", 50)
-                )))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0]").value(hasEntry("quantity", 100)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].created").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1]").value(hasEntry("id", 22)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].buyOrder").value(Matchers.<Map<String, Number>>allOf(
                         hasEntry("id", 18),
                         hasEntry("price", 600.0),
                         hasEntry("quantity", 1000),
                         hasEntry("remain", 500)
                 )))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].sellOrder").value(Matchers.<Map<String, Number>>allOf(
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].sellOrder").value(Matchers.<Map<String, Number>>allOf(
                         hasEntry("id", 222),
                         hasEntry("price", 500.0),
                         hasEntry("quantity", 500),
                         hasEntry("remain", 0)
                 )))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1]").value(hasEntry("quantity", 500)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0]").value(hasEntry("quantity", 500)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].created").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1]").value(hasEntry("id", 11)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].buyOrder").value(Matchers.<Map<String, Number>>allOf(
+                        hasEntry("id", 17),
+                        hasEntry("price", 100.0),
+                        hasEntry("quantity", 100),
+                        hasEntry("remain", 0)
+                )))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].sellOrder").value(Matchers.<Map<String, Number>>allOf(
+                        hasEntry("id", 111),
+                        hasEntry("price", 50.0),
+                        hasEntry("quantity", 150),
+                        hasEntry("remain", 50)
+                )))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1]").value(hasEntry("quantity", 100)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].created").exists());
+
     }
 
     @Test
