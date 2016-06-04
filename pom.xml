@@ -158,7 +158,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<executable>bower</executable>
+					<executable>npm</executable>
 					<arguments>
 						<argument>install</argument>
 					</arguments>
