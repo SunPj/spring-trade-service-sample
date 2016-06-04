@@ -1,5 +1,5 @@
 {
-  "name": "trade-live-updates",
+  "name": "trade-sevice-ui",
   "version": "0.0.1-SNAPSHOT",
   "dependencies": {
     "bootstrap": "latest",
