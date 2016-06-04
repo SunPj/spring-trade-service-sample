@@ -13,11 +13,12 @@ import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 @Configuration
 @EnableTransactionManagement
@@ -25,12 +26,6 @@ import javax.sql.DataSource;
 public class Config extends WebMvcConfigurerAdapter {
     @Value("${jdbc.driverClassName}")
     private String jdbcDriverClassName;
-    @Value("${jdbc.databaseurl}")
-    private String jdbcDatabaseurl;
-    @Value("${jdbc.username}")
-    private String jdbcUserName;
-    @Value("${jdbc.password}")
-    private String jdbcPassword;
 
     @Override
     public void configurePathMatch(PathMatchConfigurer configurer) {
@@ -38,12 +33,18 @@ public class Config extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public DataSource dataSource() {
+    public DataSource dataSource() throws URISyntaxException {
+        URI dbUri = new URI(System.getenv("DATABASE_URL"));
+
+        String username = dbUri.getUserInfo().split(":")[0];
+        String password = dbUri.getUserInfo().split(":")[1];
+        String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
+
         final DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(jdbcDriverClassName);
-        dataSource.setUrl(jdbcDatabaseurl);
-        dataSource.setUsername(jdbcUserName);
-        dataSource.setPassword(jdbcPassword);
+        dataSource.setUrl(dbUrl);
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
 
         return dataSource;
     }
