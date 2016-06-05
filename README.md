@@ -9,4 +9,4 @@ To run the project please execute
 
 ```mvn package && java -jar target/trade-service-0.0.1-SNAPSHOT.jar```
 
-
+Branch "heroku" is ready to deploy to heroku
