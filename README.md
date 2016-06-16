@@ -1,5 +1,5 @@
 # REST API trading service  
-It's a simple rest service written using java, spring boot, spring framework, spring data jpa. There are integration and unit tests.
+It's a simple trading service written using java8, Spring Framework, Spring Boot, Spring Data JPA, Hibernate, Postgres, Spring transaction, Websockets, AngularJs, bower, maven. There are integration and unit tests.
 
 To run tests use ```mvn clean test```
 
